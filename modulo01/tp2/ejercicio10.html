@@ -1,0 +1,46 @@
+<!-- EJERCICIO 10 -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 10</title>
+</head>
+<body>
+    <div>
+        <fieldset>
+            <legend>Cálculo cuantos días tiene mes</legend>
+            <form id="form1">
+                <label>Mes</label>
+                <input type="number" id="mes" min="1" max="12"/><br/><br/>
+                <label>Año</label> 
+                <input type="number" id="ano" min="1970" /><br/><br/>
+                <input type="submit" value="Calcular">
+                <input type = "button" value = "Reset" onClick = "fun()"/> 
+            </form>
+        </fieldset>
+        <fieldset>
+            <legend>Resultado</legend>
+            <p id="myP">Ingrese mes y año</p>
+        </fieldset>
+    </div>
+    <script>
+        let form = document.getElementById('form1');
+        form.onsubmit=(e) => {
+        e.preventDefault();
+            let mes= parseInt(document.getElementById('mes').value);
+            let ano= parseInt(document.getElementById('ano').value);
+            function diasEnUnMes(mes, ano) {
+	            return new Date(ano, mes, 0).getDate();
+            } 
+            let dias = diasEnUnMes(mes,ano)          
+            document.getElementById('myP').innerHTML = `El mes ${mes} del año ${ano} tiene ${dias} dias`;
+        } 
+        function fun(){  
+            document.getElementById("form1").reset();
+            document.getElementById('myP').innerHTML = "Ingrese mes y año"  
+        }    
+    </script>
+</body>
+</html>
