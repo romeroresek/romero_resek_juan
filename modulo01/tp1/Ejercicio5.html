@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <title>Ejercicio5</title>
+</head>
+<body>
+    <div>
+        <br>
+        <p id="msj1"></p>              
+        <p id="msj2"></p>
+        <p id="msj3"></p>
+        <script type="text/javascript">
+            let a, b;
+            a = 3; b = 7;
+            resultado = a * b;
+            //para depurar correctamente tuve que  1. modificar la variable result y 2. reemplazar document.write() por getElemtbyId() sino tiraba el error (Avoid document.write().
+            document.getElementById('msj1').innerHTML = `Variable a contiene ${a} <br> `;
+            document.getElementById('msj2').innerHTML = `Variable b contiene ${b} <br> `;
+            document.getElementById('msj3').innerHTML = `El producto de a por b es ${resultado} `;
+        </script>
+        <p>Los puntos de interrupción son fundamentales para programar</p>
+    </div>
+</body>
+</html>

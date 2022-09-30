@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <title>Ejercicio7</title>
+</head>
+<body>
+    <div>
+        <br>
+        <!-- script javascript -->
+        <script>
+
+            let dato, resultado;
+            //prompt pregunta por pantalla para que el usuario ingrese un valor en este caso solicita dos veces, no es buena práctica usar prompt es preferible formulario.
+            //val1 es el primer prompt, y val2 es el segundo prompt
+            val1 = window.prompt("Introduce tu nombre", "...");
+            val2 = window.prompt("Introduce tu apellido", "...");
+            //se crea variable resultado donde conctatena los dos valores ingresados por promt
+            resultado = `Concatenado tu nombre y apellido es: ${val1} ${val2} ` ;
+            //muestra por pantalla el string de la variable resultado.
+            document.write(resultado);
+        </script>
+    </div>
+</body>
+</html>
