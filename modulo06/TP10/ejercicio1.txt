@@ -1,0 +1,24 @@
+a - Describe dos usos o funciones que proporciona la declaración DOCTYPE en una página web.
+
+
+
+b - Para que se utilizan las siguientes etiquetas:
+<head> </head>
+<title> </title>
+<meta>
+<style> </style>
+<body> </body>
+<h1>,<h2>,<h3>,<h4>,<h5>,<h6>
+<a>
+<strong>
+<br>
+<ul>
+<li>
+<p>
+<span>
+<table> </table>
+<tr> </tr>
+<td> </td>
+<img>
+c- La etiqueta <script> puede ir dentro de las etiquetas de de <body> o <head>, hay alguna
+diferencia donde pueda ir?
