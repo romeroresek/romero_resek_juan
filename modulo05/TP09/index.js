@@ -15,8 +15,20 @@ app.get("/", function (req, res) {
     res.send("ALPHA-SILICON");
 });
 
+const cursoCont = require("./src/controller/cursoController.js");
+app.use("/api/curso",cursoCont);
+
+const materiaCont = require("./src/controller/materiaController.js");
+app.use("/api/materia",materiaCont);
+
 const personaCont = require("./src/controller/personaController.js");
 app.use("/api/persona",personaCont);
+
+const sedeCont = require("./src/controller/sedeController.js");
+app.use("/api/sede",sedeCont);
+
+const usuarioCont = require("./src/controller/usuarioController.js");
+app.use("/api/usuario",usuarioCont);
 
 /*
 const userCont = require("userController.js");

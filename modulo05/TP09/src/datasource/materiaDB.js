@@ -13,11 +13,11 @@ connection.connect((err) => {
 });
 //fin de conexion db
 
-var cursoDb = {};
+var materiaDb = {};
 
 
-cursoDb.getAll = function (funCallback) {
-    connection.query("SELECT * FROM cursos where estado >=1", function (err, result, fields) {
+materiaDb.getAll = function (funCallback) {
+    connection.query("SELECT * FROM materias where estado >=1", function (err, result, fields) {
         if (err) {
             funCallback({
                 message: "Surgio un problema, contactese con un administrador. Gracias",
@@ -30,8 +30,8 @@ cursoDb.getAll = function (funCallback) {
     });
 }
 
-cursoDb.getByDni = function (dni,funCallback) {
-    connection.query("SELECT * FROM cursos WHERE dni=?",dni, function (err, result, fields) {
+materiaDb.getByDni = function (dni,funCallback) {
+    connection.query("SELECT * FROM materias WHERE dni=?",dni, function (err, result, fields) {
         if (err) {
             funCallback({
                 message: "Surgio un problema, contactese con un administrador. Gracias",
@@ -43,7 +43,7 @@ cursoDb.getByDni = function (dni,funCallback) {
                 funCallback(undefined, result[0]);
             }else{
                 funCallback({
-                    message: "No se encontro la curso"
+                    message: "No se encontro la materia"
                 });
             }
             
@@ -51,14 +51,14 @@ cursoDb.getByDni = function (dni,funCallback) {
     });
 }
 
-cursoDb.create = function (curso, funCallback) {
-    var query = 'INSERT INTO cursos (dni,nombre,descripcion,sexo,fecha_nacimiento) VALUES (?,?,?,?,?)'
-    var dbParams = [curso.dni, curso.nombre, curso.descripcion, curso.sexo, curso.fecha_nacimiento];
+materiaDb.create = function (materia, funCallback) {
+    var query = 'INSERT INTO materias (dni,nombre,apellido,sexo,fecha_nacimiento) VALUES (?,?,?,?,?)'
+    var dbParams = [materia.dni, materia.nombre, materia.apellido, materia.sexo, materia.fecha_nacimiento];
     connection.query(query, dbParams, function (err, result, fields) {
         if (err) {
             if(err.code == 'ER_DUP_ENTRY'){
                 funCallback({
-                    message: `Ya existe la curso con el DNI ${curso.dni}`,
+                    message: `Ya existe la materia con el DNI ${materia.dni}`,
                     detail: err
                 });
             }else{
@@ -71,7 +71,7 @@ cursoDb.create = function (curso, funCallback) {
             console.error(err);
         } else {
             funCallback(undefined, {
-                message: `Se creo la curso ${curso.descripcion} ${curso.nombre}`,
+                message: `Se creo la materia ${materia.apellido} ${materia.nombre}`,
                 detail: result
             });
         }
@@ -81,7 +81,7 @@ cursoDb.create = function (curso, funCallback) {
 /**
  * 
  * @param {*} dni 
- * @param {*} curso 
+ * @param {*} materia 
  * @param {*} funCallback 
  *         retorna:
  *              code = 1 (EXITO)
@@ -89,9 +89,9 @@ cursoDb.create = function (curso, funCallback) {
  *              code = 3 (ERROR)
  * 
  */
-cursoDb.update = function (dni, curso, funCallback) {
-    var query = 'UPDATE cursos SET dni = ? , nombre = ?, descripcion = ?,  sexo = ?, fecha_nacimiento = ?, estado = ? WHERE dni = ?'
-    var dbParams = [curso.dni, curso.nombre, curso.descripcion, curso.sexo, curso.fecha_nacimiento, curso.estado, dni];
+materiaDb.update = function (dni, materia, funCallback) {
+    var query = 'UPDATE materias SET dni = ? , nombre = ?, apellido = ?,  sexo = ?, fecha_nacimiento = ?, estado = ? WHERE dni = ?'
+    var dbParams = [materia.dni, materia.nombre, materia.apellido, materia.sexo, materia.fecha_nacimiento, materia.estado, dni];
     connection.query(query, dbParams, function (err, result, fields) {
         if (err) {
             funCallback({
@@ -104,13 +104,13 @@ cursoDb.update = function (dni, curso, funCallback) {
             if (result.affectedRows == 0) {
                 funCallback({
                     code:2,
-                    message: `No se encontro la curso ${dni}`,
+                    message: `No se encontro la materia ${dni}`,
                     detail: result
                 });
             } else {
                 funCallback({
                     code:1,
-                    message: `Se modifico la curso ${curso.descripcion} ${curso.nombre}`,
+                    message: `Se modifico la materia ${materia.apellido} ${materia.nombre}`,
                     detail: result
                 });
             }
@@ -120,8 +120,8 @@ cursoDb.update = function (dni, curso, funCallback) {
 }
 
 
-cursoDb.delete = function(dni,funCallback){
-    var query = 'DELETE FROM cursos WHERE dni = ?'
+materiaDb.delete = function(dni,funCallback){
+    var query = 'DELETE FROM materias WHERE dni = ?'
     connection.query(query, dni, function (err, result, fields) {
         if (err) {
             funCallback({
@@ -132,12 +132,12 @@ cursoDb.delete = function(dni,funCallback){
         } else {
             if (result.affectedRows == 0) {
                 funCallback(undefined,{
-                    message: `No se encontro la curso ${dni}`,
+                    message: `No se encontro la materia ${dni}`,
                     detail: result
                 });
             } else {
                 funCallback(undefined,{
-                    message: `Se elimino la curso ${dni}`,
+                    message: `Se elimino la materia ${dni}`,
                     detail: result
                 });
             }
@@ -147,7 +147,7 @@ cursoDb.delete = function(dni,funCallback){
 
 /**
  *  
- * @param {*} idcurso 
+ * @param {*} idmateria 
  * @param {*} funCallback
  *         retorna:
  *              code = 1 (EXITO)
@@ -155,8 +155,8 @@ cursoDb.delete = function(dni,funCallback){
  *              code = 3 (ERROR)
  * 
  */
-cursoDb.logdelete = function (idcurso, funCallback) {
-    connection.query("UPDATE cursos SET estado = 0 WHERE idcurso = ?",idcurso, function (err, result, fields) {
+materiaDb.logdelete = function (idmateria, funCallback) {
+    connection.query("UPDATE materias SET estado = 0 WHERE idmateria = ?",idmateria, function (err, result, fields) {
         if (err) {
             funCallback({
                 code:3,
@@ -168,14 +168,14 @@ cursoDb.logdelete = function (idcurso, funCallback) {
             if (result.affectedRows == 0) {
                 funCallback({
                     code:2,
-                    message: `No se encontro el id  ${idcurso} de la curso`,
+                    message: `No se encontro el id  ${idmateria} de la materia`,
                     detail: result
                 }); 
             } else {
          //       console.error(err);
                     funCallback({
                     code:1,
-                    message: `Se modifico la curso con el id ${idcurso}`,
+                    message: `Se modifico la materia con el id ${idmateria}`,
                     detail: result
                 }); 
             }
@@ -183,4 +183,4 @@ cursoDb.logdelete = function (idcurso, funCallback) {
     });
 }
 
-module.exports = cursoDb;
+module.exports = materiaDb;
