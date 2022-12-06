@@ -47,7 +47,7 @@ function create(req, res) {
         }
     });
 }
-// Metodo para modificar cursoas
+// Metodo para modificar curso
 function update(req, res) {
     cursoDb.update(req.params.dni, req.body, function (result) {
         if (result.code == 3) {

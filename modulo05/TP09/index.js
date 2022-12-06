@@ -10,7 +10,6 @@ app.use(morgan('tiny'));
 morgan(':method :url :status :res[content-length] - :response-time ms');
   
 
-
 app.get("/", function (req, res) {
     res.send("ALPHA-SILICON");
 });
