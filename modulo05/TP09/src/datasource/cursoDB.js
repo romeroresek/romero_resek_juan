@@ -80,7 +80,7 @@ cursoDb.create = function (curso, funCallback) {
 
 /**
  * 
- * @param {*} dni 
+ * @param {*} idcurso 
  * @param {*} curso 
  * @param {*} funCallback 
  *         retorna:
@@ -110,7 +110,7 @@ cursoDb.update = function (idcurso, curso, funCallback) {
             } else {
                 funCallback({
                     code:1,
-                    message: `Se modifico la curso ${curso.descripcion} ${curso.nombre}`,
+                    message: `Se modifico la curso ${curso.nombre}, ${curso.descripcion} `,
                     detail: result
                 });
             }

@@ -7,15 +7,15 @@ const materiaDb = require("../datasource/materiaDB.js");
 
 app.get('/', getAll);
 
-app.get('/:dni', getByDni);
+app.get('/:idmaterias', getByIdMaterias);
 
 app.post('/', create);
 
-app.put('/:dni', update);
+app.put('/:idmaterias', update);
 
-app.delete('/del/:dni', eliminar);
+app.delete('/del/:idmaterias', eliminar);
 
-app.delete('/:idmateria', eliminacionlogica);
+app.delete('/:idmaterias', eliminacionlogica);
 
 // Metododo para listar todas las materias 
 function getAll(req, res) {
@@ -28,8 +28,8 @@ function getAll(req, res) {
     });
 }
 // Metodo para buscar materias por su dni
-function getByDni(req, res) {
-    materiaDb.getByDni(req.params.dni,function (err, result) {
+function getByIdMaterias(req, res) {
+    materiaDb.getByIdMaterias(req.params.idmaterias,function (err, result) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -49,7 +49,7 @@ function create(req, res) {
 }
 // Metodo para modificar materiaas
 function update(req, res) {
-    materiaDb.update(req.params.dni, req.body, function (result) {
+    materiaDb.update(req.params.idmaterias, req.body, function (result) {
         if (result.code == 3) {
             res.status(500).send(err);
         } else if (result.code == 2) {
@@ -61,7 +61,7 @@ function update(req, res) {
 }
 // Metodo par eliminar fisicmente materias de la base de datos
 function eliminar(req, res) {
-    materiaDb.delete(req.params.dni,  function (err, result) {
+    materiaDb.delete(req.params.idmaterias,  function (err, result) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -75,7 +75,7 @@ function eliminar(req, res) {
 }
 // Metodo par eliminar materias cambiando el estado a 0
 function eliminacionlogica(req, res) {
-    materiaDb.logdelete(req.params.idmateria, function (result) {
+    materiaDb.logdelete(req.params.idmaterias, function (result) {
         if (result.code == 3) {
             res.status(500).send(err);
         } else if (result.code == 2) {

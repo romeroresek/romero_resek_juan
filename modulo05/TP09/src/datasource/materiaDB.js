@@ -15,7 +15,6 @@ connection.connect((err) => {
 
 var materiaDb = {};
 
-
 materiaDb.getAll = function (funCallback) {
     connection.query("SELECT * FROM materias where estado >=1", function (err, result, fields) {
         if (err) {
@@ -30,8 +29,8 @@ materiaDb.getAll = function (funCallback) {
     });
 }
 
-materiaDb.getByDni = function (dni,funCallback) {
-    connection.query("SELECT * FROM materias WHERE dni=?",dni, function (err, result, fields) {
+materiaDb.getByIdMaterias = function (idmaterias,funCallback) {
+    connection.query("SELECT * FROM materias WHERE idmaterias=?",idmaterias, function (err, result, fields) {
         if (err) {
             funCallback({
                 message: "Surgio un problema, contactese con un administrador. Gracias",
@@ -52,13 +51,13 @@ materiaDb.getByDni = function (dni,funCallback) {
 }
 
 materiaDb.create = function (materia, funCallback) {
-    var query = 'INSERT INTO materias (dni,nombre,apellido,sexo,fecha_nacimiento) VALUES (?,?,?,?,?)'
-    var dbParams = [materia.dni, materia.nombre, materia.apellido, materia.sexo, materia.fecha_nacimiento];
+    var query = 'INSERT INTO materias (nombre,objetivo,plan_estudio,estado) VALUES (?,?,?,?)'
+    var dbParams = [materia.nombre,materia.objetivo, materia.plan_estudio, materia.estado];
     connection.query(query, dbParams, function (err, result, fields) {
         if (err) {
             if(err.code == 'ER_DUP_ENTRY'){
                 funCallback({
-                    message: `Ya existe la materia con el DNI ${materia.dni}`,
+                    message: `Ya existe la materia con el nombre ${materia.nombre}`,
                     detail: err
                 });
             }else{
@@ -71,7 +70,7 @@ materiaDb.create = function (materia, funCallback) {
             console.error(err);
         } else {
             funCallback(undefined, {
-                message: `Se creo la materia ${materia.apellido} ${materia.nombre}`,
+                message: `Se creo la materia ${materia.nombre} ${materia.objetivo}`,
                 detail: result
             });
         }
@@ -80,8 +79,8 @@ materiaDb.create = function (materia, funCallback) {
 
 /**
  * 
- * @param {*} dni 
- * @param {*} materia 
+ * @param {*} idmaterias 
+ * @param {*} materia
  * @param {*} funCallback 
  *         retorna:
  *              code = 1 (EXITO)
@@ -89,9 +88,10 @@ materiaDb.create = function (materia, funCallback) {
  *              code = 3 (ERROR)
  * 
  */
-materiaDb.update = function (dni, materia, funCallback) {
-    var query = 'UPDATE materias SET dni = ? , nombre = ?, apellido = ?,  sexo = ?, fecha_nacimiento = ?, estado = ? WHERE dni = ?'
-    var dbParams = [materia.dni, materia.nombre, materia.apellido, materia.sexo, materia.fecha_nacimiento, materia.estado, dni];
+
+materiaDb.update = function (idmaterias, materia, funCallback) {
+    var query = 'UPDATE materias SET nombre = ?, objetivo = ?, plan_estudio = ?,  estado = ? WHERE idmaterias = ?'
+    var dbParams = [materia.nombre, materia.objetivo, materia.plan_estudio, materia.estado, idmaterias];
     connection.query(query, dbParams, function (err, result, fields) {
         if (err) {
             funCallback({
@@ -104,13 +104,13 @@ materiaDb.update = function (dni, materia, funCallback) {
             if (result.affectedRows == 0) {
                 funCallback({
                     code:2,
-                    message: `No se encontro la materia ${dni}`,
+                    message: `No se encontro la materia ${idmaterias}`,
                     detail: result
                 });
             } else {
                 funCallback({
                     code:1,
-                    message: `Se modifico la materia ${materia.apellido} ${materia.nombre}`,
+                    message: `Se modifico la materia ${materia.nombre}`,
                     detail: result
                 });
             }
@@ -120,9 +120,9 @@ materiaDb.update = function (dni, materia, funCallback) {
 }
 
 
-materiaDb.delete = function(dni,funCallback){
-    var query = 'DELETE FROM materias WHERE dni = ?'
-    connection.query(query, dni, function (err, result, fields) {
+materiaDb.delete = function(idmaterias,funCallback){
+    var query = 'DELETE FROM materias WHERE idmaterias = ?'
+    connection.query(query, idmaterias, function (err, result, fields) {
         if (err) {
             funCallback({
                 message: "Surgio un problema, contactese con un administrador. Gracias",
@@ -132,12 +132,12 @@ materiaDb.delete = function(dni,funCallback){
         } else {
             if (result.affectedRows == 0) {
                 funCallback(undefined,{
-                    message: `No se encontro la materia ${dni}`,
+                    message: `No se encontro la materia ${idmaterias}`,
                     detail: result
                 });
             } else {
                 funCallback(undefined,{
-                    message: `Se elimino la materia ${dni}`,
+                    message: `Se elimino la materia ${idmaterias}`,
                     detail: result
                 });
             }
@@ -147,7 +147,7 @@ materiaDb.delete = function(dni,funCallback){
 
 /**
  *  
- * @param {*} idmateria 
+ * @param {*} idmaterias
  * @param {*} funCallback
  *         retorna:
  *              code = 1 (EXITO)
@@ -155,8 +155,9 @@ materiaDb.delete = function(dni,funCallback){
  *              code = 3 (ERROR)
  * 
  */
-materiaDb.logdelete = function (idmateria, funCallback) {
-    connection.query("UPDATE materias SET estado = 0 WHERE idmateria = ?",idmateria, function (err, result, fields) {
+
+materiaDb.logdelete = function (idmaterias, funCallback) {
+    connection.query("UPDATE materias SET estado = 0 WHERE idmaterias = ?", idmaterias, function (err, result, fields) {
         if (err) {
             funCallback({
                 code:3,
@@ -168,14 +169,14 @@ materiaDb.logdelete = function (idmateria, funCallback) {
             if (result.affectedRows == 0) {
                 funCallback({
                     code:2,
-                    message: `No se encontro el id  ${idmateria} de la materia`,
+                    message: `No se encontro el id  ${idmaterias} de la materia`,
                     detail: result
                 }); 
             } else {
          //       console.error(err);
                     funCallback({
                     code:1,
-                    message: `Se modifico la materia con el id ${idmateria}`,
+                    message: `Se modifico el estado (eliminación lógica) la materia con el id ${idmaterias}`,
                     detail: result
                 }); 
             }
