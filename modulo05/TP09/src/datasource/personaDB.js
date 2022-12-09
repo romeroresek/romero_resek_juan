@@ -30,6 +30,27 @@ personaDb.getAll = function (funCallback) {
     });
 }
 
+personaDb.getByIdPersona = function (idpersona,funCallback) {
+    connection.query("SELECT * FROM personas WHERE idpersona=?",idpersona, function (err, result, fields) {
+        if (err) {
+            funCallback({
+                message: "Surgio un problema, contactese con un administrador. Gracias",
+                detail: err
+            });
+            console.error(err);
+        } else {
+            if(result.length>0){
+                funCallback(undefined, result[0]);
+            }else{
+                funCallback({
+                    message: "No se encontro la persona"
+                });
+            }
+            
+        }
+    });
+}
+
 personaDb.getByDni = function (dni,funCallback) {
     connection.query("SELECT * FROM personas WHERE dni=?",dni, function (err, result, fields) {
         if (err) {
@@ -119,6 +140,36 @@ personaDb.update = function (dni, persona, funCallback) {
 
 }
 
+personaDb.updateByIdPersona = function (idpersona, persona, funCallback) {
+    var query = 'UPDATE personas SET dni = ? , nombre = ?, apellido = ?,  sexo = ?, fecha_nacimiento = ?, estado = ? WHERE idpersona = ?'
+    var dbParams = [persona.dni, persona.nombre, persona.apellido, persona.sexo, persona.fecha_nacimiento, persona.estado, idpersona];
+    connection.query(query, dbParams, function (err, result, fields) {
+        if (err) {
+            funCallback({
+                code:3,
+                message: "Surgio un problema, contactese con un administrador. Gracias",
+                detail: err
+            });
+            console.error(err);
+        } else {
+            if (result.affectedRows == 0) {
+                funCallback({
+                    code:2,
+                    message: `No se encontro la persona ${idpersona}`,
+                    detail: result
+                });
+            } else {
+                funCallback({
+                    code:1,
+                    message: `Se modifico la persona ${persona.apellido} ${persona.nombre}`,
+                    detail: result
+                });
+            }
+        }
+    });
+
+}
+
 
 personaDb.delete = function(dni,funCallback){
     var query = 'DELETE FROM personas WHERE dni = ?'
@@ -138,6 +189,33 @@ personaDb.delete = function(dni,funCallback){
             } else {
                 funCallback(undefined,{
                     message: `Se elimino la persona ${dni}`,
+                    detail: result
+                });
+            }
+        }
+    });
+}
+
+//deletebyidPersona
+
+personaDb.deleteByIdPersona = function(idpersona,funCallback){
+    var query = 'DELETE FROM personas WHERE idpersona = ?'
+    connection.query(query, idpersona, function (err, result, fields) {
+        if (err) {
+            funCallback({
+                message: "Surgio un problema, contactese con un administrador. Gracias",
+                detail: err
+            });
+            console.error(err);
+        } else {
+            if (result.affectedRows == 0) {
+                funCallback(undefined,{
+                    message: `No se encontro la persona ${idpersona}`,
+                    detail: result
+                });
+            } else {
+                funCallback(undefined,{
+                    message: `Se elimino la persona ${idpersona}`,
                     detail: result
                 });
             }
