@@ -7,13 +7,13 @@ const cursoDb = require("../datasource/cursoDB.js");
 
 app.get('/', getAll);
 
-app.get('/:dni', getByDni);
+app.get('/:idcurso', getByIdCurso);
 
 app.post('/', create);
 
-app.put('/:dni', update);
+app.put('/:idcurso', update);
 
-app.delete('/del/:dni', eliminar);
+app.delete('/del/:idcurso', eliminar);
 
 app.delete('/:idcurso', eliminacionlogica);
 
@@ -27,9 +27,10 @@ function getAll(req, res) {
         }
     });
 }
-// Metodo para buscar cursos por su dni
-function getByDni(req, res) {
-    cursoDb.getByDni(req.params.dni,function (err, result) {
+
+// Metodo para buscar personas por su idcurso
+function getByIdCurso(req, res) {
+    cursoDb.getByIdCurso(req.params.idcurso,function (err, result) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -37,6 +38,7 @@ function getByDni(req, res) {
         }
     });
 }
+
 // Metodo para agregar cursoas
 function create(req, res) {
     cursoDb.create(req.body, function (err, result) {
@@ -47,9 +49,10 @@ function create(req, res) {
         }
     });
 }
+
 // Metodo para modificar curso
 function update(req, res) {
-    cursoDb.update(req.params.dni, req.body, function (result) {
+    cursoDb.update(req.params.idcurso, req.body, function (result) {
         if (result.code == 3) {
             res.status(500).send(err);
         } else if (result.code == 2) {
@@ -61,7 +64,7 @@ function update(req, res) {
 }
 // Metodo par eliminar fisicmente cursos de la base de datos
 function eliminar(req, res) {
-    cursoDb.delete(req.params.dni,  function (err, result) {
+    cursoDb.delete(req.params.idcurso,  function (err, result) {
         if (err) {
             res.status(500).send(err);
         } else {
