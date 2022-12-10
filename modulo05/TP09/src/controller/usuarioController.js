@@ -7,13 +7,13 @@ const usuarioDb = require("../datasource/usuarioDB.js");
 
 app.get('/', getAll);
 
-app.get('/:dni', getByDni);
+app.get('/:idusuario', getByidusuario);
 
 app.post('/', create);
 
-app.put('/:dni', update);
+app.put('/:idusuario', update);
 
-app.delete('/del/:dni', eliminar);
+app.delete('/del/:idusuario', eliminar);
 
 app.delete('/:idusuario', eliminacionlogica);
 
@@ -27,9 +27,9 @@ function getAll(req, res) {
         }
     });
 }
-// Metodo para buscar usuarios por su dni
-function getByDni(req, res) {
-    usuarioDb.getByDni(req.params.dni,function (err, result) {
+// Metodo para buscar usuarios por su idusuario
+function getByidusuario(req, res) {
+    usuarioDb.getByidusuario(req.params.idusuario,function (err, result) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -49,7 +49,7 @@ function create(req, res) {
 }
 // Metodo para modificar usuarioas
 function update(req, res) {
-    usuarioDb.update(req.params.dni, req.body, function (result) {
+    usuarioDb.update(req.params.idusuario, req.body, function (result) {
         if (result.code == 3) {
             res.status(500).send(err);
         } else if (result.code == 2) {
@@ -61,7 +61,7 @@ function update(req, res) {
 }
 // Metodo par eliminar fisicmente usuarios de la base de datos
 function eliminar(req, res) {
-    usuarioDb.delete(req.params.dni,  function (err, result) {
+    usuarioDb.delete(req.params.idusuario,  function (err, result) {
         if (err) {
             res.status(500).send(err);
         } else {

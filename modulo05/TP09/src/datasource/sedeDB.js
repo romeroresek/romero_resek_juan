@@ -175,7 +175,7 @@ sedeDb.logdelete = function (idsede, funCallback) {
          //       console.error(err);
                     funCallback({
                     code:1,
-                    message: `Se modifico la sede con el id ${idsede}`,
+                    message: `Se modifico el estado de la sede con el id ${idsede}`,
                     detail: result
                 }); 
             }
