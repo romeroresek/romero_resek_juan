@@ -197,7 +197,6 @@ personaDb.delete = function(dni,funCallback){
 }
 
 //deletebyidPersona
-
 personaDb.deleteByIdPersona = function(idpersona,funCallback){
     var query = 'DELETE FROM personas WHERE idpersona = ?'
     connection.query(query, idpersona, function (err, result, fields) {

@@ -15,19 +15,19 @@ app.get("/", function (req, res) {
 });
 
 const cursoCont = require("./src/controller/cursoController.js");
-app.use("/api/curso",cursoCont);
+app.use("/api/cursos",cursoCont);
 
 const materiaCont = require("./src/controller/materiaController.js");
-app.use("/api/materia",materiaCont);
+app.use("/api/materias",materiaCont);
 
 const personaCont = require("./src/controller/personaController.js");
-app.use("/api/persona",personaCont);
+app.use("/api/personas",personaCont);
 
 const sedeCont = require("./src/controller/sedeController.js");
-app.use("/api/sede",sedeCont);
+app.use("/api/sedes",sedeCont);
 
 const usuarioCont = require("./src/controller/usuarioController.js");
-app.use("/api/usuario",usuarioCont);
+app.use("/api/usuarios",usuarioCont);
 
 /*
 const userCont = require("userController.js");

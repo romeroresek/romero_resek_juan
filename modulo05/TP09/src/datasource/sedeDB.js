@@ -30,8 +30,8 @@ sedeDb.getAll = function (funCallback) {
     });
 }
 
-sedeDb.getByDni = function (dni,funCallback) {
-    connection.query("SELECT * FROM sedes WHERE dni=?",dni, function (err, result, fields) {
+sedeDb.getByidsede = function (idsede,funCallback) {
+    connection.query("SELECT * FROM sedes WHERE idsede=?", idsede, function (err, result, fields) {
         if (err) {
             funCallback({
                 message: "Surgio un problema, contactese con un administrador. Gracias",
@@ -52,13 +52,13 @@ sedeDb.getByDni = function (dni,funCallback) {
 }
 
 sedeDb.create = function (sede, funCallback) {
-    var query = 'INSERT INTO sedes (dni,nombre,apellido,sexo,fecha_nacimiento) VALUES (?,?,?,?,?)'
-    var dbParams = [sede.dni, sede.nombre, sede.apellido, sede.sexo, sede.fecha_nacimiento];
+    var query = 'INSERT INTO sedes (nombre,direccion,localidad,cod_postal, telcontacto1, telcontacto2, estado) VALUES (?,?,?,?,?,?,?)'
+    var dbParams = [sede.nombre, sede.direccion, sede.localidad, sede.cod_postal, sede.telcontacto1, sede.telcontacto2, sede.estado];
     connection.query(query, dbParams, function (err, result, fields) {
         if (err) {
             if(err.code == 'ER_DUP_ENTRY'){
                 funCallback({
-                    message: `Ya existe la sede con el DNI ${sede.dni}`,
+                    message: `Ya existe la sede con el nombre ${sede.nombre}`,
                     detail: err
                 });
             }else{
@@ -71,7 +71,7 @@ sedeDb.create = function (sede, funCallback) {
             console.error(err);
         } else {
             funCallback(undefined, {
-                message: `Se creo la sede ${sede.apellido} ${sede.nombre}`,
+                message: `Se creo la sede ${sede.nombre}`,
                 detail: result
             });
         }
@@ -80,7 +80,7 @@ sedeDb.create = function (sede, funCallback) {
 
 /**
  * 
- * @param {*} dni 
+ * @param {*} idsede 
  * @param {*} sede 
  * @param {*} funCallback 
  *         retorna:
@@ -89,9 +89,9 @@ sedeDb.create = function (sede, funCallback) {
  *              code = 3 (ERROR)
  * 
  */
-sedeDb.update = function (dni, sede, funCallback) {
-    var query = 'UPDATE sedes SET dni = ? , nombre = ?, apellido = ?,  sexo = ?, fecha_nacimiento = ?, estado = ? WHERE dni = ?'
-    var dbParams = [sede.dni, sede.nombre, sede.apellido, sede.sexo, sede.fecha_nacimiento, sede.estado, dni];
+sedeDb.update = function (idsede, sede, funCallback) {
+    var query = 'UPDATE sedes SET nombre = ?, direccion = ?,  localidad = ?, cod_postal = ?, telcontacto1 = ?, telcontacto2 = ?,estado = ?  WHERE idsede = ?'
+    var dbParams = [sede.nombre, sede.direccion, sede.localidad, sede.cod_postal, sede.telcontacto1, sede.telcontacto1,sede.estado, idsede];
     connection.query(query, dbParams, function (err, result, fields) {
         if (err) {
             funCallback({
@@ -104,13 +104,13 @@ sedeDb.update = function (dni, sede, funCallback) {
             if (result.affectedRows == 0) {
                 funCallback({
                     code:2,
-                    message: `No se encontro la sede ${dni}`,
+                    message: `No se encontro la sede ${idsede}`,
                     detail: result
                 });
             } else {
                 funCallback({
                     code:1,
-                    message: `Se modifico la sede ${sede.apellido} ${sede.nombre}`,
+                    message: `Se modifico la sede ${sede.nombre}`,
                     detail: result
                 });
             }
@@ -120,9 +120,9 @@ sedeDb.update = function (dni, sede, funCallback) {
 }
 
 
-sedeDb.delete = function(dni,funCallback){
-    var query = 'DELETE FROM sedes WHERE dni = ?'
-    connection.query(query, dni, function (err, result, fields) {
+sedeDb.delete = function(idsede,funCallback){
+    var query = 'DELETE FROM sedes WHERE idsede = ?'
+    connection.query(query, idsede, function (err, result, fields) {
         if (err) {
             funCallback({
                 message: "Surgio un problema, contactese con un administrador. Gracias",
@@ -132,12 +132,12 @@ sedeDb.delete = function(dni,funCallback){
         } else {
             if (result.affectedRows == 0) {
                 funCallback(undefined,{
-                    message: `No se encontro la sede ${dni}`,
+                    message: `No se encontro la sede ${idsede}`,
                     detail: result
                 });
             } else {
                 funCallback(undefined,{
-                    message: `Se elimino la sede ${dni}`,
+                    message: `Se elimino la sede ${idsede}`,
                     detail: result
                 });
             }
