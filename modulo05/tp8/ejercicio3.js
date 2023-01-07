@@ -6,7 +6,7 @@ console.log(JSON.stringify(data));
 console.log(`sin stringify`);
 });
 
-/*
+/* .
 A) ¿Qué sucede cuando utilizamos JSON.stringify?
 JSON.parse analiza una cadena de texto como JSON y convertirá a JavaScript object.
 JSON.stringify convierte a JavaScript value a JSON string, esta convirtiendo en cadena de texto json. (esto es lo que se muestra por concola)
